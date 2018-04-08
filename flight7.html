@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: SVG bar chart with value labels (centered)</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style type="text/css">
+			body {
+				color:orange;
+			}
+		</style>
+	</head>
+	<body>
+	<h1> is it working? </h1>	
+		<script type="text/javascript">
+			
+
+
+			//Width and height
+			var w = 960;
+			var h = 960;
+			var barPadding = 1;
+			
+			var dataset;
+			var flightID = "banana";
+			var destination;
+			var departureTime
+			var totalFlights;
+			var emissions;
+			
+			console.log("it is starting 1");
+
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h)
+						.attr("border", "5px solid black;");
+
+			//VARIABLES TO GET DATA
+
+			var arrivalAirport = function(d){return flights[d].arrivalAirportEnglish}
+			var urlFinal = function(d){return ("http://www.distance24.org/route.json?stops=ARN|" + arrivalAirport(d))};
+			var dateISO = function (d){return dataset.flights[d].departureTime.scheduledUtc};
+			var dateString = function(d){JSON.stringify(dateParsed(d))};
+			//var flightTime = function(d){(dateString(d).charAt(9) + dateString(d).charAt(10) + dateString(d).charAt(12) + dateString(d).charAt(13))};
+			var accessURL = function(d){d3.json(urlFinal(d), function (data){
+					return data.distance
+			})}
+			var getDistance = function(d){return d.distance};
+			var getEmissions = function(d){
+				if (d >= 463){ return getDistance(d)*0.257}
+				else {return getDistance(d)*0.177}}
+
+			var outputFormat = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
+		
+			var dateParsed = function(d) {return outputFormat(dateISO(d))};		
+			var getTime = function(d){return dateString(d).charAt(16) + dateString(d).charAt(17) + dateString(d).charAt(19) + dateString(d).charAt(20)};
+			
+			
+
+			var generateURL = d3.json("/data.json", function(data){
+					dataset = data
+					flights = dataset.flights
+					var label = dataset.flights.flightId
+					// console.log(distances)
+					for (var i = 0; i < 3; i++) {
+						arrivalAirport
+						urlFinal
+						dateISO
+						getTime
+						// dateParsed = function(i){return d3.isoParse(dateISO(i))}
+						dateString = function(i){return dateParsed(i).toString()}
+						//flightTime(i)
+						accessURL = function(i){d3.json(urlFinal(i), function (data){
+									console.log(data.distance)
+									return data.distance})};
+						getDistance(i)
+						getEmissions(i)
+						parseFloat(getTime)
+						console.log(
+							i,
+							"arrival airport: " + arrivalAirport(i),
+							"urlFinal = " + urlFinal(i),
+							// "dateISO " + dateISO(i),
+							 "dateParsed " + dateParsed(i),
+							// "date String " + dateString(i),
+							//"flight time = " + flightTime(i),
+							"access URL " + accessURL(i),
+							"Distance " + getDistance(i),
+							"Minutes " + getTime(i),
+							"Emissions " + getEmissions(i), )														
+						bars
+						text
+						}
+
+
+
+				//VARIABLES TO DRAW STUFF
+
+					var createLabels = svg.selectAll("g")
+									  .data(dataset.flights[i].flightId)
+									  .enter()
+									  .append("text")
+									  .text(label);
+
+					var createBars = svg.selectAll("rect")
+						    				   .data(dataset.flights[i].flightId)
+											   .enter()
+											   .append("rect");	
+						    
+					var bars = createBars	   
+								   .attr("x", function(d,i){
+								   		return (i+d * 10) + 70})
+								   .attr("y", function(d, i) {
+								   		return 50;
+								   })
+								   .attr("width", 25)
+								   .attr("height", function() {
+								   		return 150;
+								   })
+								   .attr("fill", function(d) {
+										return "rgb(155 ,250,73)";
+										 })
+								   .attr("margin", 10)
+					var text = createLabels						   
+								   .attr("x", function(d,i){
+								   		return i* w/10})
+								   .attr("y", function(d, i) {
+								   		return 250;
+								   })
+								   .attr("font-family", "sans-serif")
+								   .attr("font-size", "11px")
+								   .attr("fill", "black")
+								   .attr("width", 10);
+						   	
+			
+			});
+
+
+							
+
+
+
+
+	</script>
+</body>
+</html>

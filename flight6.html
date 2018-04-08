@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: SVG bar chart with value labels (centered)</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style type="text/css">
+			body {
+				font-family: sans-serif;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+	<h1> is it working? </h1>	
+		<script type="text/javascript">
+			
+
+			//Width and height
+			var w = 960;
+			var h = 960;
+			var barPadding = 1;
+			
+			var dataset;
+			var flightID = "banana";
+			var destination;
+			var departureTime
+			var totalFlights;
+			
+			console.log("it is starting 1");
+
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h)
+						.attr("border", "5px solid black;");
+
+			var generateURL = d3.json("/data.json", function(data){
+					//builds the URL and generates distance AND emissions
+					// url = data
+					// url = url.flights
+					dataset = data
+					flights = dataset.flights
+					// console.log(distances)
+					for (var i = 0; i < 5; i++) {
+						var originalDate = dataset.flights[i].departureTime.scheduledUtc;
+						var date = d3.timeParse(originalDate);
+						var label = dataset.flights[i].flightId;
+						var arrivalAirport = flights[i].arrivalAirportEnglish
+						var urlFinal = ("http://www.distance24.org/route.json?stops=ARN|" + arrivalAirport);
+						// console.log(urlFinal);
+						var getDistance = d3.json(urlFinal, function(data){
+							var realDistance = data.distance
+							if (realDistance >= 463) {
+							emissions = realDistance * 0.257	
+							console.log("this is flight number: " + label + " it left arlanda " + originalDate + " with destination: " + arrivalAirport + " its a long distance flight" + " carbon emissions: " + emissions +"KG of CO2")}
+							else {
+							emissions = realDistance * 0.177	
+							console.log("this is flight number: " + label + "it left arlanda " + originalDate + "with destination: " + arrivalAirport + " carbon emissions: " + emissions +"KG of CO2")
+							}
+						});
+						// console.log("this is flight number: " + label)
+						// console.log("it left arlanda " + originalDate)
+						// console.log("with destination: " + arrivalAirport)
+						// console.log("flight distance: " + realDistance)
+						// console.log("carbon emissions: " + emissions)
+					// console.log(date)
+				    svg.selectAll("circle")
+						   .data(dataset.flights[i].flightId)
+						   .enter()
+						   .append("circle")
+						   .attr("r", 10)
+						   .attr("cx", function(d, i) {
+						   		return w - (i * (w / date.length) / 10);
+						   })
+						   .attr("cy", function(d, i) {
+						   		return (i * (w / date.length) / 50);
+						   })
+						   // .attr("width", 50)
+						   // .attr("height", function() {
+						   // 		return 20;
+						   // })
+						   .attr("fill", function(d) {
+								return "rgb(0, 0, " + Math.round(50 * 10) + ")";
+								 });
+						   
+						};
+						for (var i = 0; i < flights.length; i++) {
+					// console.log(dataset.flights[i].departureTime.estimatedUtc)
+						var label = dataset.flights[i].flightId;
+						// console.log(date)
+					    svg.selectAll("text")
+							   .data(dataset.flights[i].flightId)
+							   .enter()
+							   .append("p")
+							   .text(label)
+							   .attr("x", function(d, i) {
+							   		return w - (i * (w / date.length) / 10);
+							   })
+							   .attr("y", function(d, i) {
+							   		return (i * (w / date.length) / 50);
+							   })
+							   
+							};
+
+
+
+									  }); 
+
+
+
+
+
+	</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: SVG bar chart with value labels (centered)</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style type="text/css">
+			body {
+				font-family: sans-serif;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+	<h1> is it working? </h1>	
+		<script type="text/javascript">
+			
+
+			//Width and height
+			var w = 960;
+			var h = 960;
+			var barPadding = 1;
+			
+			var dataset;
+			var flightID;
+			var destination;
+			var departureTime;
+			var totalFlights;
+
+			var dataset = d3.json("/data.json", function(data){
+					dataset = data
+					flights = dataset.flights
+					var flightID = dataset.flights.flightId })
+
+			console.log(dataset)
+			console.log(flights)		
+
+// 			console.log("it is starting 1");
+
+// 			var svg = d3.select("body")
+// 						.append("svg")
+// 						.attr("width", w)
+// 						.attr("height", h)
+// 						.attr("border", "5px solid black;");
+
+// 			var generateURL = d3.json("/data.json", function(data){
+// 					url = data
+// 					url = url.flights
+// 					// console.log(distances)
+// 					for (var i = 0; i < 100; i++) {
+// 						var arrivalAirport = url[i].arrivalAirportEnglish
+// 						var urlFinal = ("http://www.distance24.org/route.json?stops=ARN|" + arrivalAirport)
+// 						// console.log(urlFinal);
+// 				}
+// 			});
+
+// 
+				
+
+// 			var dataset = d3.json("/data.json", function(data){
+// 					dataset = data
+// 					flights = dataset.flights
+// 					// console.log(data.flights)
+// 					// console.log("FLIGHT ID:  ")
+// 					for (var i = 0; i < flights.length; i++) {
+// 					// console.log(dataset.flights[i].departureTime.estimatedUtc)
+// 					var originalDate = dataset.flights[i].departureTime.estimatedUtc;
+// 					var date = d3.timeParse(originalDate);
+// 					var label = dataset.flights[i].flightId;
+// 					// console.log(date)
+// 				    svg.selectAll("circle")
+// 						   .data(dataset.flights[i].flightId)
+// 						   .enter()
+// 						   .append("circle")
+// 						   .attr("r", 10)
+// 						   .attr("cx", function(d, i) {
+// 						   		return w - (i * (w / date.length) / 10);
+// 						   })
+// 						   .attr("cy", function(d, i) {
+// 						   		return (i * (w / date.length) / 50);
+// 						   })
+// 						   // .attr("width", 50)
+// 						   // .attr("height", function() {
+// 						   // 		return 20;
+// 						   // })
+// 						   .attr("fill", function(d) {
+// 								return "rgb(0, 0, " + Math.round(50 * 10) + ")";
+// 								 });
+						   
+// 						};
+// 						for (var i = 0; i < flights.length; i++) {
+// 					// console.log(dataset.flights[i].departureTime.estimatedUtc)
+// 						var label = dataset.flights[i].flightId;
+// 						// console.log(date)
+// 					    svg.selectAll("text")
+// 							   .data(dataset.flights[i].flightId)
+// 							   .enter()
+// 							   .append("p")
+// 							   .text(label)
+// 							   .attr("x", function(d, i) {
+// 							   		return w - (i * (w / date.length) / 10);
+// 							   })
+// 							   .attr("y", function(d, i) {
+// 							   		return (i * (w / date.length) / 50);
+// 							   })
+							   
+// 							};
+
+
+
+// 									  }); 
+
+
+
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: SVG bar chart with value labels (centered)</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style type="text/css">
+			body {
+				color:orange;
+			}
+		</style>
+	</head>
+	<body>
+	<h1> is it working? </h1>	
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 960;
+			var h = 960;
+			var barPadding = 1;
+
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h)
+						.attr("border", "5px solid black;");
+
+			var arrivalAirport = function(d){return flights[d].arrivalAirportEnglish}
+			var 			
+
+			var generateURL = d3.json("/data.json", function(data){
+					//builds the URL and generates distance AND emissions
+					// url = data
+					// url = url.flights
+					dataset = data
+					flights = dataset.flights
+					// console.log(distances)
+					for (var i = 0; i < 3; i++) {
+
+
+						var arrivalAirport = flights[i].arrivalAirportEnglish
+						var urlFinal = ("http://www.distance24.org/route.json?stops=ARN|" + arrivalAirport)
+						// console.log(urlFinal);
+						var originalDate = dataset.flights[i].departureTime.scheduledUtc;
+						var date = d3.timeParse(originalDate);
+						var originalDateString = JSON.stringify(originalDate);
+						var minutes = (originalDateString.charAt(9) + originalDateString.charAt(10) + originalDateString.charAt(12) + originalDateString.charAt(13));
+						// console.log(minutes)						
+						//console.log(label)
+						//var emissions;						
+						var getEmissions = d3.json(urlFinal, function(data){
+							var realDistance = data.distance;
+							//console.log(realDistance.toString())
+							if (realDistance >= 463) {
+								console.log(realDistance * 0.257)
+								 return realDistance * 0.257}
+							else {
+								return (realDistance * 0.177).toString}															
+							});
+
+
+					console.log("this is flight number: " + label + " it left arlanda " + originalDate + " with destination " + arrivalAirport ) 
+					
+					var label = dataset.flights[i].flightId 
+					var createLabels = svg.selectAll("g")
+							  .data(dataset.flights[i].flightId)
+							  .enter()
+							  .append("text")
+							  .text(label);
+
+				    var createBars = svg.selectAll("rect")
+				    				   .data(dataset.flights[i].flightId)
+									   .enter()
+									   .append("rect");	
+				    
+				    bars = createBars	   
+						   .attr("x", function(d,i){
+						   		return (i * w/50) - minutes/10})
+						   .attr("y", function(d, i) {
+						   		return 50;
+						   })
+						   .attr("width", minutes/100)
+						   .attr("height", function() {
+						   		return 150;
+						   })
+						   .attr("fill", function(d) {
+								return "rgb("+ minutes/13 +"," +minutes/5+"," + minutes/2 + ")";
+								 })
+						   .attr("margin", 10)
+					text = createLabels						   
+						   .attr("x", function(d,i){
+						   		return i* w/minutes})
+						   .attr("y", function(d, i) {
+						   		return 250;
+						   })
+						   .attr("font-family", "sans-serif")
+						   .attr("font-size", "11px")
+						   .attr("fill", "black")
+						   .attr("width", 10);
+				   	   
+						
+					 };
+					})
+
+
+
+
+
+	</script>
+</body>
+</html>
