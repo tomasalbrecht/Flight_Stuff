@@ -25,23 +25,18 @@
 						.attr("height", h)
 						.attr("border", "5px solid black;");
 
-			var arrivalAirport = function(d){return flights[d].arrivalAirportEnglish}
-			var 			
-
 			var generateURL = d3.json("/data.json", function(data){
 					//builds the URL and generates distance AND emissions
-					// url = data
-					// url = url.flights
 					dataset = data
 					flights = dataset.flights
 					// console.log(distances)
 					for (var i = 0; i < 3; i++) {
-
-
 						var arrivalAirport = flights[i].arrivalAirportEnglish
-						var urlFinal = ("http://www.distance24.org/route.json?stops=ARN|" + arrivalAirport)
+						var urlFinal = ("https://www.distance24.org/route.json?stops=ARN|" + arrivalAirport)
 						// console.log(urlFinal);
 						var originalDate = dataset.flights[i].departureTime.scheduledUtc;
+						console.log(typeof originalDate)
+						var parseData = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
 						var date = d3.timeParse(originalDate);
 						var originalDateString = JSON.stringify(originalDate);
 						var minutes = (originalDateString.charAt(9) + originalDateString.charAt(10) + originalDateString.charAt(12) + originalDateString.charAt(13));
@@ -66,14 +61,21 @@
 							  .data(dataset.flights[i].flightId)
 							  .enter()
 							  .append("text")
-							  .text(label);
+							  .text(label)
+							  .attr("x", function(d,i){
+						   		return i* w/minutes})
+						   .attr("y", function(d, i) {
+						   		return 250;
+						   })
+						   .attr("font-family", "sans-serif")
+						   .attr("font-size", "11px")
+						   .attr("fill", "black")
+						   .attr("width", 10);
 
 				    var createBars = svg.selectAll("rect")
 				    				   .data(dataset.flights[i].flightId)
 									   .enter()
-									   .append("rect");	
-				    
-				    bars = createBars	   
+									   .append("rect")   
 						   .attr("x", function(d,i){
 						   		return (i * w/50) - minutes/10})
 						   .attr("y", function(d, i) {
@@ -86,17 +88,7 @@
 						   .attr("fill", function(d) {
 								return "rgb("+ minutes/13 +"," +minutes/5+"," + minutes/2 + ")";
 								 })
-						   .attr("margin", 10)
-					text = createLabels						   
-						   .attr("x", function(d,i){
-						   		return i* w/minutes})
-						   .attr("y", function(d, i) {
-						   		return 250;
-						   })
-						   .attr("font-family", "sans-serif")
-						   .attr("font-size", "11px")
-						   .attr("fill", "black")
-						   .attr("width", 10);
+						   .attr("margin", 10)						   
 				   	   
 						
 					 };
