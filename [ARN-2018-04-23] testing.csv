@@ -1,0 +1,3 @@
+entryID, flight ID, Destination, Destination_IATA, Continent, Country, Time, Status, Price, Distance, Emissions, TaxCuts 
+0,6F719,Malaga,AGP,Europe,ES,2018-04-23T04:20:00Z,Departed,1107.52,2992.0,529.584,1536.7392857142854
+1,SK419,Copenhagen,CPH,Europe,DK,2018-04-23T05:35:00Z,Departed,952.91,523.0,92.571,268.62120535714286

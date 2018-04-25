@@ -11,7 +11,9 @@
 		</style>
 	</head>
 	<body>
-	<h1> is it working? </h1>	
+	<h1> Gov Contribugions </h1>	
+
+	<p id="demo"> </p>
 		<script type="text/javascript">
 
 			//Width and height
@@ -34,11 +36,11 @@
 					// url = data
 					// url = url.flights
 
-					// var xScale = d3.scale ar()
+					// var xScale = d3.scaleLinear()
      //                 .domain([0, d3.max(dataset)])
      //                 .range([0, w - barPadding]);						
 
-     //        		var yScale = d3.scale ar()
+     //        		var yScale = d3.scaleLinear()
      //                 .domain([0, 500])
      //                 .range([0, h]);        
 
@@ -46,8 +48,8 @@
 					dataset = data
 					flights = dataset.flights
 					// console.log(distances)
-					// for (var i = 0; i < 5; i++) {
-					for (var i = 0; i < flights.length; i++) {
+					for (var i = 0; i < 5; i++) {
+					// for (var i = 0; i < flights.length; i++) {
 						var arrivalAirport = flights[i].arrivalAirportEnglish
 						var urlFinal = ("https://www.distance24.org/route.json?stops=ARN|" + arrivalAirport)
 						//Object.defineProperty(flights[i], "teste", {value:"abc"})
@@ -65,31 +67,31 @@
 		
 						req(flights[i], urlFinal);
 					 };
-sleep(1000 * 20).then(() => {
+sleep(1000 * 2).then(() => {
 	
 					
-				    var createBars = svg.selectAll("circle")
-				    				   .data(dataset.flights)
-									   .enter()
-									   .append("circle");	
+				    // var createBars = svg.selectAll("circle")
+				    // 				   .data(dataset.flights)
+								// 	   .enter()
+								// 	   .append("circle");	
 				    
-				    bars = createBars	   
-						   .attr("cx", function(d,i){
-						   	// console.log(hoursMinutes)
-						   		return ((i*hoursMinutes)/w)+480
-						   })
-						   .attr("cy", function(d, i) {
-						   		return (d.emissionsVar);
-						   })
-						   //.attr("width", 25)
-						   .attr("r", function(d) {
-						   		// console.log(d.distance );
-						   		return (d.distanceVar);
-						   })
-						   .attr("fill", function(d) {
-								return "rgb("+ Math.floor((Math.random() * 255) + 1) +"," +Math.floor((Math.random() * 255) + 1)+"," + Math.floor((Math.random() * 255) + 1) + ")";
-								 })
-						   .attr("margin", 10);
+				    // bars = createBars	   
+						  //  .attr("cx", function(d,i){
+						  //  	// console.log(hoursMinutes)
+						  //  		return ((i*hoursMinutes)/w)+480
+						  //  })
+						  //  .attr("cy", function(d, i) {
+						  //  		return (d.emissionsVar);
+						  //  })
+						  //  //.attr("width", 25)
+						  //  .attr("r", function(d) {
+						  //  		// console.log(d.distance );
+						  //  		return (d.distanceVar);
+						  //  })
+						  //  .attr("fill", function(d) {
+								// return "rgb("+ Math.floor((Math.random() * 255) + 1) +"," +Math.floor((Math.random() * 255) + 1)+"," + Math.floor((Math.random() * 255) + 1) + ")";
+								//  })
+						  //  .attr("margin", 10);
 					
 var createLabels = svg.selectAll("g")
 							  .data(dataset.flights)
@@ -136,7 +138,7 @@ function req(flight, urlFinal) {
 							govContribution = (flight.emissions/2.24)*6.5
 							govContributionVAT = govContribution*1.25
 
-							console.log("\n  this is flight number: " + flight.flightId+ "\n  with destination " + flight.arrivalAirport + "\n  distance " +flight.distance +"\n  emissions: " + flight.emissions + "\n  Gov Subsidies " +  govContribution +"SEK" + "\n  Gov with VAT " +  govContributionVAT+"SEK" )
+							console.log("\nline this is flight number: " + flight.flightId+ "\nline with destination " + flight.arrivalAirport + "\nline distance " +flight.distance +"\nline emissions: " + flight.emissions + "\nline Gov Subsidies " +  govContribution +"SEK" + "\nline Gov with VAT " +  govContributionVAT+"SEK" )
 
 						flight.distanceVar = ((realDistance)/50.3) 
 						flight.emissionsVar = (flight.emissions)/10

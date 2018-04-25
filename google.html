@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: SVG bar chart with value labels (centered)</title>
+		<script type="text/javascript" src="../d3.js"></script>
+		<style type="text/css">
+			body {
+				color:orange;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+
+<script type="text/javascript">
+const API_KEY = '1234';
+const options =  { write: "C:\Users\tomas\Documents\GitHub\Flight_Stuff" + '/data'};
+const qpx = require('google-flights-api')(API_KEY, options);
+
+const q = {
+   adultCount: 1, 
+   maxPrice: 'EUR5000', 
+   solutions: 1, 
+   origin: 'DUB',
+   destination: 'GDN', 
+   date: '2016-12-14'
+};
+qpx.query(q).then((data) => {
+  //data looks like: [ { airline: 'SK', price: 'EUR71.10' } ]
+}).catch(console.error);
+</script>
